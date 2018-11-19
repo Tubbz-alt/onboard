@@ -13,3 +13,4 @@ usr/share/onboard/NEWS usr/share/doc/onboard
 usr/share/onboard/onboard-defaults.conf* usr/share/doc/onboard
 usr/share/onboard/onboard-default-settings.gschema.override.example usr/share/doc/onboard
 usr/share/onboard/README usr/share/doc/onboard
+usr/share/onboard/README.md usr/share/doc/onboard
