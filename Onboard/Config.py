@@ -95,9 +95,9 @@ DEFAULT_ICP_Y              = 50    # else dconf data migration won't happen.
 DEFAULT_ICP_HEIGHT         = 64
 DEFAULT_ICP_WIDTH          = 64
 
-DEFAULT_LAYOUT             = "Compact"
-DEFAULT_THEME              = "Classic Onboard"
-DEFAULT_COLOR_SCHEME       = "Classic Onboard"
+DEFAULT_LAYOUT             = "DeepinTouch"
+DEFAULT_THEME              = "Droid"
+DEFAULT_COLOR_SCHEME       = "Granite"
 
 START_ONBOARD_XEMBED_COMMAND = "onboard --xid"
 

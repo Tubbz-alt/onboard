@@ -47,7 +47,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <description>Name of the file or basename of the current theme.</description>
         </key>
         <key name="system-theme-tracking-enabled" type="b">
-            <default>true</default>
+            <default>false</default>
             <summary>Track changes of the current GTK-theme.</summary>
             <description>Switch onboard themes of matching basenames in sync with the current GTK-theme.</description>
         </key>
