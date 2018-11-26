@@ -26,6 +26,8 @@ from __future__ import division, print_function, unicode_literals
 import time
 import weakref
 import gc
+import dbus
+import itertools
 from contextlib import contextmanager
 
 from gi.repository import Gdk, GLib
@@ -60,7 +62,7 @@ from Onboard.canonical_equivalents import canonical_equivalents
 import Onboard.osk as osk
 
 try:
-    from Onboard.utils import run_script, get_keysym_from_name, dictproperty, run_command
+    from Onboard.utils import run_script, get_keysym_from_name, dictproperty
 except DeprecationWarning:
     pass
 
@@ -978,7 +980,6 @@ class Keyboard(WordSuggestions):
                   BCExpandCorrections, BCPreviousPredictions,
                   BCNextPredictions, BCPauseLearning, BCLanguage, BCIMSwitch,
                   BCStealthMode, BCAutoLearn, BCAutoPunctuation, BCInputline,
-                  BCFcitxKBD, BCFcitxSogouPinyin,
                   ]}
         for key in self.layout.iter_global_keys():
             if key.is_layer_button():
@@ -3024,37 +3025,63 @@ class BCStealthMode(ButtonController):
         self.set_active(config.wp.stealth_mode)
 
 
-# TODO(hualet): don't use external commands
 class BCIMSwitch(ButtonController):
 
     id = "inputmethod"
 
-    def update_label(self):
-        output = run_command("qdbus org.fcitx.Fcitx /inputmethod org.fcitx.Fcitx.InputMethod.CurrentIM")
-        output_utf8 = output.decode("UTF-8")
-        if not output_utf8.find("fcitx-keyboard-us") == -1:
-            self.key.label = "EN"
-        elif not output_utf8.find("sogoupinyin") == -1:
-            self.key.label = "sogou"
+    def __init__(self, keyboard, key):
+        super(BCIMSwitch, self).__init__(keyboard, key)
+        self.key.font_size = 0.1
+
+        self._dbus_proxy = None
+        self._dbus_im_ifc = None
+        self._dbus_prop_ifc = None
+        self._im = ""
+        self._im_list = []
+
+        self._init_dbus()
+        self._init_data()
+
+    def _init_dbus(self):
+        session_bus = dbus.SessionBus()
+        self._dbus_proxy = session_bus.get_object("org.fcitx.Fcitx", "/inputmethod")
+        self._dbus_im_ifc = dbus.Interface(self._dbus_proxy, "org.fcitx.Fcitx.InputMethod")
+        self._dbus_prop_ifc = dbus.Interface(self._dbus_proxy, "org.freedesktop.DBus.Properties")
+        self._dbus_prop_ifc.connect_to_signal("PropertiesChanged", self._dbus_props_changed)
+
+    def _init_data(self):
+        self._im = self._dbus_im_ifc.GetCurrentIM()
+        self._im_list = self._dbus_prop_ifc.Get("org.fcitx.Fcitx.InputMethod", "IMList")
+
+    def _dbus_props_changed(self, ifce, changed, invalidated):
+        if ifce == "org.fcitx.Fcitx.InputMethod":
+            self._init_data()
+            self._update_label()
+            self.keyboard.redraw([self.key])
+
+    def _update_label(self):
+        for (name, unique_name, _, _) in self._im_list:
+            if unique_name == self._im:
+                label = name[0:2]
+                self.key.labels = {
+                    0 : label,
+                    Modifiers.SHIFT : label,
+                    Modifiers.CAPS : label,
+                    Modifiers.NUMLK : label,
+                    Modifiers.ALTGR : label
+                }
 
     def release(self, view, button, event_type):
-        run_command("qdbus org.fcitx.Fcitx /inputmethod org.fcitx.Fcitx.InputMethod.ToggleIM")
+        got = False
+        for (_, unique_name, _, enabled) in itertools.cycle(self._im_list):
+            if not enabled:
+                continue
+            if got:
+                self._dbus_im_ifc.SetCurrentIM(unique_name)
+                self._im = unique_name
+                break
+            if unique_name == self._im:
+                got = True
 
     def update(self):
-        self.update_label()
-
-
-class BCFcitxKBD(ButtonController):
-
-    id = "kbd"
-
-    def release(self, view, button, event_type):
-        run_command("qdbus org.fcitx.Fcitx /inputmethod org.fcitx.Fcitx.InputMethod.SetCurrentIM fcitx-keyboard-us")
-
-
-class BCFcitxSogouPinyin(ButtonController):
-
-    id = "sogoupinyin"
-
-    def release(self, view, button, event_type):
-        run_command("qdbus org.fcitx.Fcitx /inputmethod org.fcitx.Fcitx.InputMethod.SetCurrentIM sogoupinyin")
+        self._update_label()
