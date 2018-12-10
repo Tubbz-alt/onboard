@@ -1,7 +1,6 @@
-etc
 usr/bin
 usr/lib
-usr/share/applications
+usr/share/applications/onboard.desktop
 usr/share/glib-2.0
 usr/share/icons
 usr/share/man
