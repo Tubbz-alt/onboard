@@ -3063,13 +3063,14 @@ class BCIMSwitch(ButtonController):
         for (name, unique_name, _, _) in self._im_list:
             if unique_name == self._im:
                 label = name[0:2]
-                self.key.labels = {
+                labels = {
                     0 : label,
                     Modifiers.SHIFT : label,
                     Modifiers.CAPS : label,
                     Modifiers.NUMLK : label,
                     Modifiers.ALTGR : label
                 }
+                self.key.set_labels(labels)
 
     def release(self, view, button, event_type):
         got = False
