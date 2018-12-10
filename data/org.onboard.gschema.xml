@@ -57,7 +57,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <description>List of encountered system themes (GTK-themes) and the Onboard themes they are linked to.</description>
         </key>
         <key name="show-status-icon" type="b">
-            <default>true</default>
+            <default>false</default>
             <summary>Show status icon instead of the classic minimize.</summary>
             <description>Display an icon in the notification area to hide and show onboard.</description>
         </key>
@@ -121,7 +121,7 @@ If unavailable, 'AppIndicator' falls back to GtkStatusIcon.
         <key name="xembed-unity-greeter-offset-x" type="d">
             <default>85.0</default>
             <summary>Horizontal position in unity-greeter</summary>
-            <description>Maximum distance of the keyboard in unity-greeter in pixels from the left screen edge. Depending on the available width, the offset is gradually lowered. Negative values center the keyboard horizontally. 
+            <description>Maximum distance of the keyboard in unity-greeter in pixels from the left screen edge. Depending on the available width, the offset is gradually lowered. Negative values center the keyboard horizontally.
 This key has no effect outside of unity-greeter.</description>
         </key>
 
@@ -843,7 +843,7 @@ Example: [["LALT", "TAB"], ["LALT", "SHIFT", "TAB"], ["CTRL", "ALT", "F[0-9]+"]]
         <key name="learning-behavior-paused" enum="org.onboard.keyboard.LearningBehaviorPaused">
             <default>"nothing"</default>
             <summary>Learning behavior when paused</summary>
-            <description>Learning behavior while the "Pause learning" button is active. 
+            <description>Learning behavior while the "Pause learning" button is active.
 With 'known-only', new words are rejected, but frequency and recency of already known words are still recorded.
             </description>
         </key>
