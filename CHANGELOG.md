@@ -1,3 +1,7 @@
+### 1.4.1.3
+
+*   fix 1001 patch unset
+
 ### 1.4.1.2
 
 - 修改默认的主题到 Droid，修改默认布局到 DeepinTouch
