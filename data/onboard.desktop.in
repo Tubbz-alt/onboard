@@ -9,3 +9,8 @@ Categories=Utility;Accessibility;
 MimeType=application/x-onboard;
 Icon=onboard
 X-Ubuntu-Gettext-Domain=onboard
+Actions=settings
+
+[Desktop Action settings]
+_Name=Settings
+Exec=onboard-settings
