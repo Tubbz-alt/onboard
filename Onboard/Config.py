@@ -619,7 +619,7 @@ class Config(ConfigObject):
         self.add_key("system-theme-tracking-enabled", True)
         self.add_key("system-theme-associations", {}, 'a{ss}')
         self.add_key("snippets", {}, "as")
-        self.add_key("show-status-icon", True)
+        self.add_key("show-status-icon", False)
         self.add_key("status-icon-provider", StatusIconProviderEnum.AppIndicator,
                                              enum={"auto" : 0,
                                                    "GtkStatusIcon" : 1,
