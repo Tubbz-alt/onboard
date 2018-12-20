@@ -44,7 +44,7 @@ _logger = logging.getLogger("KbdWindow")
 ###############
 
 ### Config Singleton ###
-from Onboard.Config import Config
+from Onboard.Config import Config, DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT
 config = Config()
 ########################
 
@@ -686,7 +686,7 @@ class KbdWindow(KbdWindowBase, WindowRectPersist, Gtk.Window):
         if not self._visible and visible and \
            not config.is_docking_enabled() and \
            not config.xid_mode:
-            rect = self.get_current_rect()
+            rect = self.get_rect()
             if not rect is None: # shouldn't happen, fix this
                 self.move_resize(*rect) # sync position
                 self.keyboard_widget.sync_transition_position(rect)
@@ -1124,6 +1124,14 @@ class KbdWindow(KbdWindowBase, WindowRectPersist, Gtk.Window):
             # remember our rects to distinguish from user move/resize
             self.remember_rect(r)
             rect = r
+
+        # If the window is in its default postion, then correct it to bottom center
+        # of the screen.
+        if rect.x == DEFAULT_X and rect.y == DEFAULT_Y and \
+            rect.w == DEFAULT_WIDTH and rect.h == DEFAULT_HEIGHT:
+            docking_rect, _ = self.get_docking_monitor_rects()
+            rect.x = docking_rect.x + (docking_rect.w - rect.w) / 2.0
+            rect.y = docking_rect.y + docking_rect.h - rect.h - 100
 
         self.keyboard_widget.sync_transition_position(rect)
         return rect
