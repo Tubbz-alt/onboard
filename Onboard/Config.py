@@ -625,7 +625,7 @@ class Config(ConfigObject):
                                                    "GtkStatusIcon" : 1,
                                                    "AppIndicator" : 2,
                                                   })
-        self.add_key("start-minimized", False)
+        self.add_key("start-minimized", True)
         self.add_key("show-tooltips", True)
         self.add_key("key-label-font", "")      # default font for all themes
         self.add_key("key-label-overrides", {}, "as") # default labels for all themes
