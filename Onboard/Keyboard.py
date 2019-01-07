@@ -3044,12 +3044,22 @@ class BCIMSwitch(ButtonController):
 
     def _init_dbus(self):
         session_bus = dbus.SessionBus()
-        self._dbus_proxy = session_bus.get_object("org.fcitx.Fcitx", "/inputmethod")
+        try:
+            self._dbus_proxy = session_bus.get_object("org.fcitx.Fcitx", "/inputmethod")
+        except:
+            _logger.warning("can't find fcitx dbus service, input method switching not avialable")
+
+        # Fcitx service may not available in countries other than China.
+        if not self._dbus_proxy:
+            return
+
         self._dbus_im_ifc = dbus.Interface(self._dbus_proxy, "org.fcitx.Fcitx.InputMethod")
         self._dbus_prop_ifc = dbus.Interface(self._dbus_proxy, "org.freedesktop.DBus.Properties")
         self._dbus_prop_ifc.connect_to_signal("PropertiesChanged", self._dbus_props_changed)
 
     def _init_data(self):
+        if not self._dbus_im_ifc or not self._dbus_prop_ifc:
+            return
         self._im = self._dbus_im_ifc.GetCurrentIM()
         self._im_list = self._dbus_prop_ifc.Get("org.fcitx.Fcitx.InputMethod", "IMList")
 
@@ -3060,6 +3070,9 @@ class BCIMSwitch(ButtonController):
             self.keyboard.redraw([self.key])
 
     def _update_label(self):
+        if not self._im_list:
+            return
+
         for (name, unique_name, _, _) in self._im_list:
             if unique_name == self._im:
                 label = name[0:2]
@@ -3073,6 +3086,9 @@ class BCIMSwitch(ButtonController):
                 self.key.set_labels(labels)
 
     def release(self, view, button, event_type):
+        if not self._im_list:
+            return
+
         got = False
         for (_, unique_name, _, enabled) in itertools.cycle(self._im_list):
             if not enabled:
