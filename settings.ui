@@ -253,6 +253,9 @@
       <row>
         <col id="0" translatable="yes">Universal Access</col>
       </row>
+      <row>
+        <col id="0" translatable="yes">About</col>
+      </row>
     </data>
   </object>
   <object class="GtkListStore" id="_reposition_method_model">
@@ -4406,6 +4409,70 @@ Requires restart.</property>
                   </object>
                   <packing>
                     <property name="position">8</property>
+                    <property name="tab_fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="about_box">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">9</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkLabel" id="label69">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">About</property>
+                        <property name="xalign">0</property>
+                        <attributes>
+                          <attribute name="scale" value="1.5"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator" id="separator11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label71">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Onboard is an onscreen keyboard useful for everybody that cannot use a hardware keyboard, for example TabletPC users, mobility impaired users.</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child type="tab">
+                  <object class="GtkLabel" id="label72">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">About</property>
+                  </object>
+                  <packing>
+                    <property name="position">9</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
